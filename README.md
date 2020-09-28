@@ -25,16 +25,9 @@ Just another Discord bot framework. Being created for personal use based around 
 
 This package is not ready for public consumption.
 
-### Current Roadmap to v1.0.0
+### [v1.0.0 Milestone](https://github.com/zikeji/eris-somnus/milestone/1)
 
-- [x] Basic underlying framework design
-- [x] Custom event monitoring
-- [ ] Replace debug package with emitted events or another approach. [#5](https://github.com/zikeji/eris-somnus/issues/5)
-- [ ] "monitors" module implementation [#6](https://github.com/zikeji/eris-somnus/issues/6)
-- [ ] "commands" module implementation [#7](https://github.com/zikeji/eris-somnus/issues/7)
-- [ ] command module arguments [#8](https://github.com/zikeji/eris-somnus/issues/8)
-- [ ] Scheduled tasks? [#10](https://github.com/zikeji/eris-somnus/issues/10)
-- [ ] Database integration implementation? [#9](https://github.com/zikeji/eris-somnus/issues/9)
+The [GitHub milestone](https://github.com/zikeji/eris-somnus/milestone/1) will be used to track features related to a potential 1.0.0 release.
 
 ### Quick Start
 
