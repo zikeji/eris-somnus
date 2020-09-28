@@ -8,7 +8,7 @@ const debug = Debug("events:message-create");
 export default class extends SomnusEvent {
   constructor(somnus: SomnusClient) {
     super(somnus, {
-      name: "MessageCreate",
+      name: "MonitorHandler",
       event: "messageCreate",
     });
   }
