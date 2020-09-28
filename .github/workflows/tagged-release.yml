@@ -1,0 +1,40 @@
+name: "tagged-release"
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  tagged-release:
+    name: "Tagged Release"
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - name: Install dependencies
+        run: npm ci
+      - name: Run eslint
+        run: npm run test:lint
+      - name: Run tests & coverage
+        run: npm run coverage
+        env: 
+          BOT_TOKEN: "${{ secrets.BOT_TOKEN }}"
+      - name: Build
+        run: npm run build --if-present
+      - name: Create Docs
+        run: npm run docs
+      - uses: papeloto/action-zip@v1
+        with:
+          files: package.json package-lock.json LICENSE dist/ docs/
+          dest: dist.zip
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          files: |
+            LICENSE
+            dist.zip
