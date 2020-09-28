@@ -14,16 +14,18 @@ export class SomnusRegistry<T extends SomnusBaseModule> {
   public somnus: SomnusClient;
   public name: string;
   public modules: Map<string, T> = new Map();
-  public readonly ModuleConstructor: SomnusBaseModuleConstructor<T>;
+  public readonly moduleConstructor: unknown;
 
-  constructor(
-    somnus: SomnusClient,
-    name: string,
-    moduleConstructor: SomnusBaseModuleConstructor<T>
-  ) {
+  /**
+   * Creates a registry with for the provided module and directory.
+   * @param somnus The underlying SomnusClient instance.
+   * @param name The name of the registry, which corresponds to the base and user directory.
+   * @param moduleConstructor The constructor for the registry's modules.
+   */
+  constructor(somnus: SomnusClient, name: string, moduleConstructor: unknown) {
     this.somnus = somnus;
     this.name = name;
-    this.ModuleConstructor = moduleConstructor;
+    this.moduleConstructor = moduleConstructor;
   }
 
   /**
@@ -78,7 +80,7 @@ export class SomnusRegistry<T extends SomnusBaseModule> {
    * Add a module to the registry.
    */
   public add(module: T): void {
-    if (!(module instanceof this.ModuleConstructor)) {
+    if (!(module instanceof (this.moduleConstructor as never))) {
       throw TypeError("Invalid Module");
     }
     this.remove(module);
