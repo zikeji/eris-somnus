@@ -25,6 +25,12 @@ jobs:
       env: 
         BOT_TOKEN: "${{ secrets.BOT_TOKEN }}"
     - run: npm run build --if-present
+    - name: Coveralls Parallel
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        flag-name: run-${{ matrix.test_number }}
+        parallel: true
   finish:
     needs: test
     runs-on: ubuntu-latest
@@ -33,4 +39,4 @@ jobs:
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN  }}
-        parralel-finished: true
+        parallel-finished: true
