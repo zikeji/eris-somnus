@@ -1,0 +1,8 @@
+{
+  "inputFiles": ["./src/lib"],
+  "mode": "file",
+  "excludeNotExported": true,
+  "includeVersion": true,
+  "out": "./docs",
+  "json": "./docs.json"
+}

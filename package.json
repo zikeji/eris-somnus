@@ -1,0 +1,65 @@
+{
+  "name": "eris-somnus",
+  "version": "0.0.1",
+  "description": "TypeScript bot framework for Eris.",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "github:zikeji/eris-somnus"
+  },
+  "scripts": {
+    "lint": "eslint --ext ts src --fix",
+    "clean": "rimraf dist",
+    "build": "npm run clean && tsc -p .",
+    "watch": "npm run clean && tsc -p . -w",
+    "test": "mocha -r ts-node/register tests/**/*.test.ts",
+    "test:lint": "eslint --ext ts src",
+    "coverage": "nyc -r lcov -e .ts -x \"*.test.ts\" npm run test",
+    "coverage:report": "nyc report --reporter=html",
+    "docs": "typedoc"
+  },
+  "files": [
+    "dist/*"
+  ],
+  "homepage": "https://github.com/zikeji/eris-somnus",
+  "bugs": {
+    "url": "https://github.com/zikeji/eris-somnus/issues"
+  },
+  "keywords": [
+    "discord",
+    "discord bot",
+    "framework",
+    "bot framework",
+    "discord bot framework",
+    "eris",
+    "eris framework",
+    "eris bot framework"
+  ],
+  "author": "Zikeji <me@zikeji.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chai": "^4.2.12",
+    "@types/debug": "^4.1.5",
+    "@types/mocha": "^8.0.3",
+    "@types/node": "^14.11.2",
+    "@types/yargs-parser": "^15.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.2.0",
+    "@typescript-eslint/parser": "^4.2.0",
+    "chai": "^4.2.0",
+    "eslint": "^7.10.0",
+    "eslint-config-airbnb-typescript-prettier": "^3.1.0",
+    "mocha": "^8.1.3",
+    "nyc": "^15.1.0",
+    "prettier": "^2.1.2",
+    "rimraf": "^3.0.2",
+    "ts-node": "^9.0.0",
+    "typedoc": "^0.19.2",
+    "typescript": "^4.0.3"
+  },
+  "dependencies": {
+    "debug": "^4.2.0",
+    "eris": "^0.13.3",
+    "globby": "^11.0.1",
+    "yargs-parser": "^20.2.0"
+  }
+}
