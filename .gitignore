@@ -4,3 +4,5 @@ node_modules/
 .vscode/
 docs.json
 docs/
+coverage/
+.nyc_output/

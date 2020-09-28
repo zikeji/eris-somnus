@@ -12,16 +12,15 @@
     "clean": "rimraf dist",
     "build": "npm run clean && tsc -p .",
     "watch": "npm run clean && tsc -p . -w",
-    "test": "mocha -r ts-node/register tests/**/*.test.ts",
+    "test": "mocha --timeout 30000 -r ts-node/register tests/**/*.test.ts",
     "test:lint": "eslint --ext ts src",
-    "coverage": "nyc -r lcov -e .ts -x \"*.test.ts\" npm run test",
-    "coverage:report": "nyc report --reporter=html",
+    "coverage": "nyc npm t",
     "docs": "typedoc"
   },
   "files": [
     "dist/*"
   ],
-  "homepage": "https://github.com/zikeji/eris-somnus",
+  "homepage": "https://eris-somnus.zikeji.com/",
   "bugs": {
     "url": "https://github.com/zikeji/eris-somnus/issues"
   },
@@ -38,6 +37,7 @@
   "author": "Zikeji <me@zikeji.com>",
   "license": "MIT",
   "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@types/chai": "^4.2.12",
     "@types/debug": "^4.1.5",
     "@types/mocha": "^8.0.3",
