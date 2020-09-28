@@ -2,6 +2,10 @@
     "compileOnSave": true,
     "compilerOptions": {
       "target": "es2015",
+      "types": [
+        "node",
+        "mocha"
+      ],
       "lib": [
         "es2015",
         "es2016"

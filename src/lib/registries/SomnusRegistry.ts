@@ -78,7 +78,7 @@ export class SomnusRegistry<T extends SomnusBaseModule> {
    */
   public add(module: T): void {
     if (!(module instanceof this.ModuleConstructor)) {
-      throw TypeError("Invalid Error");
+      throw TypeError("Invalid Module");
     }
     this.remove(module);
     this.modules.set(module.name, module);
