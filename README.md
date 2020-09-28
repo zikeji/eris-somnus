@@ -31,4 +31,13 @@ The [GitHub milestone](https://github.com/zikeji/eris-somnus/milestone/1) will b
 
 ### Quick Start
 
-TODO: write an impressive quick start
+The bare minimum at this time. With default modules loaded.
+
+```typescript
+import { SomnusClient } from "eris-somnus";
+
+const client = new SomnusClient("discord-token");
+client.connect(() => {
+  console.log("connected");
+});
+```
