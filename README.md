@@ -19,25 +19,22 @@
 
 ### About
 
-Just another Discord bot framework. Being created for personal use based around [eris](https://github.com/abalabahaha/eris) & [eris-fleet](https://github.com/danclay/eris-fleet).
+Just another Discord bot framework. Being created for personal use based around [eris](https://github.com/abalabahaha/eris) & [eris-fleet](https://github.com/danclay/eris-fleet). The intent is to create a easily typed framework that can be readily extended and made to fit a variety of different purposes.
 
 ### ALPHA WARNING
 
 This package is not ready for public consumption.
 
-### Roadmap
+### Current Roadmap to v1.0.0
 
 - [x] Basic underlying framework design
 - [x] Custom event monitoring
-- [ ] Drop debug package dependency and use a more streamlined solution
-- [ ] Monitors
-- [ ] Commands
-- [ ] Custom arguments for commands
-- [ ] Inhibitors
-- [ ] Scheduled tasks (?)
-- [ ] Database integration using TypeORM
-- [ ] Improve typings?
-- [ ] **More?**
+- [ ] Replace debug package with emitted events or another approach. [#5](https://github.com/zikeji/eris-somnus/issues/5)
+- [ ] "monitors" module implementation [#6](https://github.com/zikeji/eris-somnus/issues/6)
+- [ ] "commands" module implementation [#7](https://github.com/zikeji/eris-somnus/issues/7)
+- [ ] command module arguments [#8](https://github.com/zikeji/eris-somnus/issues/8)
+- [ ] Scheduled tasks? [#10](https://github.com/zikeji/eris-somnus/issues/10)
+- [ ] Database integration implementation? [#9](https://github.com/zikeji/eris-somnus/issues/9)
 
 ### Quick Start
 
