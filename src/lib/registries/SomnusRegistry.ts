@@ -65,6 +65,7 @@ export class SomnusRegistry<T extends SomnusBaseModule> {
           default: SomnusBaseModuleConstructor<T>;
         }
       | SomnusBaseModuleConstructor<T>;
+    // istanbul ignore next
     const ModuleConstructor =
       "default" in LoadedModule ? LoadedModule.default : LoadedModule;
     const module = new ModuleConstructor(this.somnus);
