@@ -1,4 +1,4 @@
-name: Lint, Test, Build, & Coverage
+name: "validate-commit"
 
 on:
   push:
