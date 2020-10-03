@@ -1,19 +1,19 @@
 import { Message } from "eris";
-import { Debug } from "../lib/Debug";
 import { SomnusEvent } from "../index";
 import type { SomnusClient } from "../lib/SomnusClient";
-
-const debug = Debug("events:message-create");
+import type { SomnusEventRegistry } from "../lib/registries/SomnusEventRegistry";
+import { SomnusClientEvents } from "../lib/SomnusClientEvents";
 
 export default class extends SomnusEvent {
-  constructor(somnus: SomnusClient) {
-    super(somnus, {
+  constructor(client: SomnusClient, registry: SomnusEventRegistry) {
+    super(client, registry, {
+      enabled: true,
       name: "MonitorHandler",
       event: "messageCreate",
     });
   }
 
   async run(message: Message): Promise<void> {
-    debug("received message", this.event, message.content);
+    this.client.emit(SomnusClientEvents.info, message, this.name);
   }
 }

@@ -1,3 +1,4 @@
+import type { SomnusMonitorRegistry } from "../registries/SomnusMonitorRegistry";
 import type { SomnusClient } from "../SomnusClient";
 import { SomnusBaseModule, SomnusBaseModuleOptions } from "./SomnusBaseModule";
 
@@ -10,10 +11,14 @@ export interface SomnusMonitorOptions extends SomnusBaseModuleOptions {
 
 export default abstract class SomnusMonitor extends SomnusBaseModule {
   public event: string;
-  constructor(somnus: SomnusClient, options: SomnusMonitorOptions) {
-    super(somnus, options);
+  constructor(
+    client: SomnusClient,
+    registry: SomnusMonitorRegistry,
+    options: SomnusMonitorOptions
+  ) {
+    super(client, registry, options);
     this.event = options.event;
-    this.somnus.on(this.event, this.run.bind(this));
+    this.client.on(this.event, this.run.bind(this));
   }
 
   public abstract run(...args: readonly unknown[]): Promise<void>;

@@ -1,5 +1,5 @@
 export * from "./lib/SomnusClient";
-
+export * from "./lib/SomnusClientEvents";
 export * from "./lib/modules/SomnusBaseModule";
 export * from "./lib/modules/SomnusEvent";
 export * from "./lib/modules/SomnusMonitor";

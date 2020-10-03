@@ -1,39 +1,35 @@
 import globby from "globby";
 import { resolve } from "path";
-import { Debug } from "../Debug";
 import type { SomnusBaseModule } from "../modules/SomnusBaseModule";
 import type { SomnusClient } from "../SomnusClient";
+import { SomnusClientEvents } from "../SomnusClientEvents";
+import { SomnusRegistryError } from "../util/SomnusRegistryError";
 
-const debug = Debug("lib:registries");
-
-export type SomnusBaseModuleConstructor<T> = new (
-  ...args: ConstructorParameters<typeof SomnusBaseModule>
-) => T;
-
-export class SomnusRegistry<T extends SomnusBaseModule> {
-  public somnus: SomnusClient;
-  public name: string;
-  public modules: Map<string, T> = new Map();
-  public readonly moduleConstructor: unknown;
-
+/**
+ * Base SomnusRegistry class handling logic for loading and reloading it's own modules.
+ * @typeParam T The module the registry holds.
+ */
+export class SomnusRegistry<T extends SomnusBaseModule> extends Map<string, T> {
   /**
    * Creates a registry with for the provided module and directory.
-   * @param somnus The underlying SomnusClient instance.
+   * @param client Client instance.
    * @param name The name of the registry, which corresponds to the base and user directory.
    * @param moduleConstructor The constructor for the registry's modules.
    */
-  constructor(somnus: SomnusClient, name: string, moduleConstructor: unknown) {
-    this.somnus = somnus;
-    this.name = name;
-    this.moduleConstructor = moduleConstructor;
+  constructor(
+    public client: SomnusClient,
+    public name: string,
+    public readonly moduleConstructor: unknown
+  ) {
+    super();
   }
 
   /**
    * Load all modules in the registry.
    */
   async load(): Promise<void> {
-    this.modules.clear();
-    const promises: Promise<void>[] = [];
+    super.clear();
+    const promises: Promise<T | null>[] = [];
     const modules = await globby(
       [
         resolve(__dirname, "../../", this.name, "**/*.js").replace(/\\/g, "/"),
@@ -47,7 +43,11 @@ export class SomnusRegistry<T extends SomnusBaseModule> {
       promises.push(this.loadModule(resolve(module)))
     );
     await Promise.all(promises);
-    debug.extend(this.name)(`Loaded ${promises.length} modules.`);
+    this.client.emit(
+      SomnusClientEvents.info,
+      this.name,
+      `Loaded ${promises.length} modules.`
+    );
   }
 
   /**
@@ -60,42 +60,79 @@ export class SomnusRegistry<T extends SomnusBaseModule> {
   /**
    * Load a module by it's path into the registry.
    */
-  async loadModule(modulePath: string): Promise<void> {
-    debug.extend(this.name)(`Loading module at "${modulePath}".`);
-    const LoadedModule = (await import(modulePath)) as
-      | {
-          default: SomnusBaseModuleConstructor<T>;
-        }
-      | SomnusBaseModuleConstructor<T>;
-    // istanbul ignore next
-    const ModuleConstructor =
-      "default" in LoadedModule ? LoadedModule.default : LoadedModule;
-    const module = new ModuleConstructor(this.somnus);
-    this.add(module);
+  async loadModule(modulePath: string): Promise<T | null> {
+    this.client.emit(
+      SomnusClientEvents.info,
+      this.name,
+      `Loading module at "${modulePath}".`
+    );
+    let module: T | null = null;
+    try {
+      const LoadedModule = (await import(modulePath)) as
+        | {
+            default: new (
+              somnia: SomnusClient,
+              registry: SomnusRegistry<T>
+            ) => T;
+          }
+        | (new (somnia: SomnusClient, registry: SomnusRegistry<T>) => T);
+      // covers edgecase of moduleinterop for ts compiling
+      // istanbul ignore next
+      const ModuleConstructor =
+        "default" in LoadedModule ? LoadedModule.default : LoadedModule;
+      module = new ModuleConstructor(this.client, this) as T;
+      this.add(module);
+    } catch (error) {
+      this.client.emit(
+        SomnusClientEvents.error,
+        new SomnusRegistryError(`Failed to load module ${modulePath}.`),
+        error
+      );
+    }
     delete require.cache[modulePath];
-    debug.extend(this.name)(`Loaded module "${module.name}".`);
+    return module;
   }
 
   /**
    * Add a module to the registry.
    */
-  public add(module: T): void {
+  public add(module: T): T | null {
     if (!(module instanceof (this.moduleConstructor as never))) {
-      throw TypeError("Invalid Module");
+      this.client.emit(
+        SomnusClientEvents.error,
+        new SomnusRegistryError(`Invalid module was attempted to be added.`)
+      );
+      return null;
     }
-    this.remove(module);
-    this.modules.set(module.name, module);
+    this.delete(module);
+    this.client.emit(SomnusClientEvents.ModuleLoaded, module);
+    super.set(module.name, module);
+    return module;
   }
 
   /**
-   * Remove a module from the registry.
+   * Delete a module from the registry.
    */
-  public remove(name: T | string): boolean {
-    const module = this.modules.get(
-      typeof name === "string" ? name : name.name
-    );
+  public delete(name: T | string): boolean {
+    const module = super.get(typeof name === "string" ? name : name.name);
     if (!module) return false;
-    this.modules.delete(module.name);
+    super.delete(module.name);
     return true;
+  }
+
+  /**
+   * The overriden set method, this will always throw.
+   * @internal
+   */
+  // eslint-disable-next-line class-methods-use-this
+  public set(): never {
+    throw new Error("Cannot set in this Registry.");
+  }
+
+  /**
+   * Return the name of this registry.
+   */
+  public toString(): string {
+    return this.name;
   }
 }
