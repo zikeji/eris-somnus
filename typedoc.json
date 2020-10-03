@@ -1,8 +1,27 @@
 {
   "inputFiles": ["./src/lib"],
   "mode": "file",
+  "excludeExternals": true,
   "excludeNotExported": true,
   "includeVersion": true,
   "out": "./docs",
-  "json": "./docs.json"
+  "json": "./docs.json",
+  "theme": "node_modules/typedoc-light-theme/src",
+  "projectName": {
+    "link": true,
+    "before": "<span class=\"title\">💤 </span>",
+    "after": "<span class=\"title\"> 💤</span>",
+    "beforeLinks": "&emsp;"
+  },
+  "links": [
+    {
+      "text": "GitHub",
+      "href": "https://github.com/zikeji/eris-sommnus"
+    },
+    {
+      "text": "NPM",
+      "href": "https://www.npmjs.com/package/eris-sommnus"
+    }
+  ],
+  "createFile": ".nojekyll"
 }
