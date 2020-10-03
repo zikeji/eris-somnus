@@ -1,13 +1,7 @@
 import { expect } from "chai";
 import { SomnusEventRegistry } from "../src/lib/registries/SomnusEventRegistry";
 import { SomnusMonitorRegistry } from "../src/lib/registries/SomnusMonitorRegistry";
-import { Eris, SomnusClient } from "../src/lib/SomnusClient";
-
-describe("SomnusClient Eris extension", function () {
-  it("expect Eris.Client to be SomnusClient", function () {
-    expect(Eris.Client).to.equal(SomnusClient);
-  });
-});
+import { SomnusClient } from "../src/lib/SomnusClient";
 
 const client = new SomnusClient(process.env.BOT_TOKEN || "", {});
 
