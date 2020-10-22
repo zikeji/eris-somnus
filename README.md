@@ -1,3 +1,7 @@
+# STATUS
+
+Indefinitely on hold - recently made changes to the framework this was supposed to replace.
+
 # eris-somnus
 
 [![npm](https://img.shields.io/npm/v/eris-somnus)][npm]
